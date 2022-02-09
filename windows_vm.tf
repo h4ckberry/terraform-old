@@ -60,7 +60,7 @@ resource "azurerm_virtual_machine_extension" "custom_script_win" {
 
   protected_settings = <<SETTINGS
     {
-      "commandToExecute": "powershell -command \\\"wsl --install\\\""
+      "commandToExecute": "powershell -Command \\\"Start-Process wsl --install -d ubuntu -Verb runas \\\""
     }
   SETTINGS
 }
