@@ -1,9 +1,17 @@
+.DS_Store
+
 # Local .terraform directories
 **/.terraform/*
+
+# .tfvars files
+*.tfvars
 
 # .tfstate files
 *.tfstate
 *.tfstate.*
+
+# backend files
+*.tfbackend
 
 # Crash log files
 crash.log
