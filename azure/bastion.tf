@@ -11,6 +11,8 @@ resource "azurerm_bastion_host" "bastion_host" {
   name                = "bas-${var.user}-${var.env}"
   location            = azurerm_resource_group.rg_enk_dev.location
   resource_group_name = azurerm_resource_group.rg_enk_dev.name
+  # sku                 = "Standard"
+  # tunneling_enabled   = true
 
   ip_configuration {
     name                 = "vm_ip_configuration"
