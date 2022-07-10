@@ -26,7 +26,7 @@ resource "azurerm_resource_group" "rg_enk_mgmt" {
 module "mngt" {
   source         = "../module/mgmt"
   tags           = var.tags
-  resource_group = azurerm_resource_group.rg_enk_mngt
+  resource_group = azurerm_resource_group.rg_enk_mgmt
   vnet           = var.vnet
   bastion        = var.bastion
   vm             = var.vm
