@@ -17,14 +17,14 @@ provider "azurerm" {
   features {}
 }
 
-resource "azurerm_resource_group" "rg_enk_mngt" {
+resource "azurerm_resource_group" "rg_enk_mgmt" {
   name     = "rg-enk-${var.tags.env}"
   location = "japaneast"
   tags     = var.tags
 }
 
 module "mngt" {
-  source         = "../module/mngt"
+  source         = "../module/mgmt"
   tags           = var.tags
   resource_group = azurerm_resource_group.rg_enk_mngt
   vnet           = var.vnet
