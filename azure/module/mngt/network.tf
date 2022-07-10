@@ -1,24 +1,24 @@
 
-resource "azurerm_virtual_network" "vn_enk_dev" {
-  name                = "vn-${var.user}-${var.env}"
-  location            = azurerm_resource_group.rg_enk_dev.location
-  resource_group_name = azurerm_resource_group.rg_enk_dev.name
-  address_space       = ["10.0.0.0/16"]
-  dns_servers         = ["10.0.0.4", "10.0.0.5"]
+resource "azurerm_virtual_network" "vn_mgmt" {
+  name                = "vn-${var.tags.env}"
+  location            = var.resource_group.location
+  resource_group_name = var.resource_group.name
+  address_space       = var.vnet.address_space
+  dns_servers         = var.vnet.dns_servers
   tags                = var.tags
 }
 
 resource "azurerm_subnet" "sn_bastion" {
   name                 = "AzureBastionSubnet"
-  resource_group_name  = azurerm_resource_group.rg_enk_dev.name
-  virtual_network_name = azurerm_virtual_network.vn_enk_dev.name
+  resource_group_name  = var.resource_group.name
+  virtual_network_name = azurerm_virtual_network.vn_mgmt.name
   address_prefixes     = ["10.0.1.0/24"]
 }
 
 resource "azurerm_subnet" "sn_private" {
   name                 = "sn-private"
-  resource_group_name  = azurerm_resource_group.rg_enk_dev.name
-  virtual_network_name = azurerm_virtual_network.vn_enk_dev.name
+  resource_group_name  = var.resource_group.name
+  virtual_network_name = azurerm_virtual_network.vn_mgmt.name
   address_prefixes     = ["10.0.2.0/24"]
 }
 
