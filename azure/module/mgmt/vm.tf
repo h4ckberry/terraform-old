@@ -35,6 +35,9 @@ resource "azurerm_linux_virtual_machine" "vm_mgmt" {
   computer_name                   = var.tags.env
   admin_username                  = "${var.tags.user}user"
   disable_password_authentication = true
+  #custom_data = filebase64("../module/mgmt/cloud-init.sh")
+  #custom_data    = base64encode(data.template_file.linux-vm-cloud-init.rendered)
+  #custom_data    = base64encode(file("../module/mgmt/cloud-init.sh"))
 
   admin_ssh_key {
     username   = "${var.tags.user}user"
