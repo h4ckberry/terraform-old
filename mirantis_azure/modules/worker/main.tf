@@ -98,7 +98,6 @@ resource "azurerm_lb" "worker_public_lb" {
 # create the load balancer backend pool
 resource "azurerm_lb_backend_address_pool" "worker_lb_be_pool" {
   name                = "${var.cluster_name}-worker-be-pool"
-  resource_group_name = var.rg
   loadbalancer_id     = azurerm_lb.worker_public_lb.id
 }
 
@@ -112,20 +111,18 @@ resource "azurerm_network_interface_backend_address_pool_association" "worker_lb
 
 # Add a health check probe for the backend instances
 resource "azurerm_lb_probe" "worker_lb_probe_8080" {
-  resource_group_name = var.rg
   loadbalancer_id     = azurerm_lb.worker_public_lb.id
   name                = "probe_worker_8080"
-  protocol            = "TCP"
+  protocol            = "Tcp"
   port                = 8080
   interval_in_seconds = 5
   number_of_probes    = 2
 }
 
 resource "azurerm_lb_probe" "worker_lb_probe_8443" {
-  resource_group_name = var.rg
   loadbalancer_id     = azurerm_lb.worker_public_lb.id
   name                = "probe_worker_8443"
-  protocol            = "TCP"
+  protocol            = "Tcp"
   port                = 8443
   interval_in_seconds = 5
   number_of_probes    = 2
@@ -133,29 +130,27 @@ resource "azurerm_lb_probe" "worker_lb_probe_8443" {
 
 # Add rules for the worker loadbalancer
 resource "azurerm_lb_rule" "worker_lb_rule_8080" {
-  resource_group_name            = var.rg
   loadbalancer_id                = azurerm_lb.worker_public_lb.id
   name                           = format("%s-worker-8080-8080", var.cluster_name)
-  protocol                       = "TCP"
+  protocol                       = "Tcp"
   frontend_port                  = 8080
   backend_port                   = 8080
   frontend_ip_configuration_name = "worker-LB-FrontendIP"
   enable_floating_ip             = false
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.worker_lb_be_pool.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.worker_lb_be_pool.id]
   idle_timeout_in_minutes        = 5
   probe_id                       = azurerm_lb_probe.worker_lb_probe_8080.id
 }
 
 resource "azurerm_lb_rule" "worker_lb_rule_8443" {
-  resource_group_name            = var.rg
   loadbalancer_id                = azurerm_lb.worker_public_lb.id
   name                           = format("%s-worker-8443-8443", var.cluster_name)
-  protocol                       = "TCP"
+  protocol                       = "Tcp"
   frontend_port                  = 8443
   backend_port                   = 8443
   frontend_ip_configuration_name = "worker-LB-FrontendIP"
   enable_floating_ip             = false
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.worker_lb_be_pool.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.worker_lb_be_pool.id]
   idle_timeout_in_minutes        = 5
   probe_id                       = azurerm_lb_probe.worker_lb_probe_8443.id
 }

@@ -1,3 +1,12 @@
+terraform {
+  backend "azurerm" {
+    resource_group_name  = "rg-tfstate"
+    storage_account_name = "satfstateenk"
+    container_name       = "tfstate"
+    key                  = "terraform.tfstate.mirantis"
+  }
+}
+
 provider "azurerm" {
   features {}
   environment = var.azure_environment

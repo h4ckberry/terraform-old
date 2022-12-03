@@ -98,7 +98,6 @@ resource "azurerm_lb" "master_public_lb" {
 # create the load balancer backend pool
 resource "azurerm_lb_backend_address_pool" "mke_lb_be_pool" {
   name                = "${var.cluster_name}-mke-be-pool"
-  resource_group_name = var.rg
   loadbalancer_id     = azurerm_lb.master_public_lb.id
 }
 
@@ -112,20 +111,18 @@ resource "azurerm_network_interface_backend_address_pool_association" "mke_lb_be
 
 # Add a health check probe for the backend instances
 resource "azurerm_lb_probe" "mke_lb_probe_443" {
-  resource_group_name = var.rg
   loadbalancer_id     = azurerm_lb.master_public_lb.id
   name                = "probe_mke_443"
-  protocol            = "TCP"
+  protocol            = "Tcp"
   port                = 443
   interval_in_seconds = 5
   number_of_probes    = 2
 }
 
 resource "azurerm_lb_probe" "mke_lb_probe_6443" {
-  resource_group_name = var.rg
   loadbalancer_id     = azurerm_lb.master_public_lb.id
   name                = "probe_mke_6443"
-  protocol            = "TCP"
+  protocol            = "Tcp"
   port                = 6443
   interval_in_seconds = 5
   number_of_probes    = 2
@@ -133,29 +130,27 @@ resource "azurerm_lb_probe" "mke_lb_probe_6443" {
 
 # Add rules for the master loadbalancer
 resource "azurerm_lb_rule" "mke_lb_rule_443" {
-  resource_group_name            = var.rg
   loadbalancer_id                = azurerm_lb.master_public_lb.id
   name                           = format("%s-mke-443-443", var.cluster_name)
-  protocol                       = "TCP"
+  protocol                       = "Tcp"
   frontend_port                  = 443
   backend_port                   = 443
   frontend_ip_configuration_name = "mke-LB-FrontendIP"
   enable_floating_ip             = false
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.mke_lb_be_pool.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.mke_lb_be_pool.id]
   idle_timeout_in_minutes        = 5
   probe_id                       = azurerm_lb_probe.mke_lb_probe_443.id
 }
 
 resource "azurerm_lb_rule" "mke_lb_rule_6443" {
-  resource_group_name            = var.rg
   loadbalancer_id                = azurerm_lb.master_public_lb.id
   name                           = format("%s-mke-6443-6443", var.cluster_name)
-  protocol                       = "TCP"
+  protocol                       = "Tcp"
   frontend_port                  = 6443
   backend_port                   = 6443
   frontend_ip_configuration_name = "mke-LB-FrontendIP"
   enable_floating_ip             = false
-  backend_address_pool_id        = azurerm_lb_backend_address_pool.mke_lb_be_pool.id
+  backend_address_pool_ids       = [azurerm_lb_backend_address_pool.mke_lb_be_pool.id]
   idle_timeout_in_minutes        = 5
   probe_id                       = azurerm_lb_probe.mke_lb_probe_6443.id
 }

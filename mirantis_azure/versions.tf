@@ -1,11 +1,11 @@
 
 terraform {
-  required_version = ">= 0.12"
+  required_version = "1.3.6"
 
   required_providers {
-    azurerm = "= 2.32.0"
+    azurerm = "= 3.34.0"
     local   = "= 2.0.0"
-    random  = "= 3.0.0"
-    tls     = "= 3.0.0"
+    random  = "= 3.4.3"
+    tls     = "= 4.0.4"
   }
 }

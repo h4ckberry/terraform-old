@@ -2,7 +2,7 @@
 # Resource Group
 #####
 resource "azurerm_resource_group" "rg" {
-  name     = "rg-enk-${var.cluster_name}"
+  name     = "rg-${var.cluster_name}"
   location = var.location
 
   tags = merge(
