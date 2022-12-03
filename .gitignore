@@ -1,5 +1,8 @@
 .DS_Store
 
+# Azure env file
+**/env
+
 # Local .terraform directories
 **/.terraform/*
 
