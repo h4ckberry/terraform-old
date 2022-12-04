@@ -331,3 +331,18 @@ EOF
     var.tags
   )
 }
+
+resource "azurerm_dev_test_global_vm_shutdown_schedule" "schedule_shutdown_worker" {
+  count              = var.worker_count
+  virtual_machine_id = azurerm_virtual_machine.worker[0].id
+  location           = var.location
+  enabled            = true
+
+  daily_recurrence_time = "0000"
+  timezone              = "Tokyo Standard Time"
+
+  notification_settings {
+    enabled = false
+  }
+  tags     = var.tags
+}

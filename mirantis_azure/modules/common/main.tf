@@ -42,13 +42,13 @@ resource azurerm_subnet_network_security_group_association "cluster_subnet_nsg" 
 # Rules for master NSG
 #####
 resource "azurerm_network_security_rule" "cluster" {
-  name                        = "allow"
-  description                 = "Allow all"
+  name                        = "allow-local-pc"
+  description                 = "Allow local pc"
   priority                    = 100
   direction                   = "Inbound"
   access                      = "Allow"
-  protocol                    = "*"
-  source_address_prefix       = "*"
+  protocol                    = "Tcp"
+  source_address_prefixes     = ["133.32.133.111"]
   source_port_range           = "*"
   destination_port_range      = "*"
   destination_address_prefix  = "*"
