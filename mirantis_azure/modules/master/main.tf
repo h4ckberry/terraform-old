@@ -1,12 +1,12 @@
-resource "random_string" "pub_ip_salt" {
-  count   = 1
-  length  = 4
-  special = false
+# resource "random_string" "pub_ip_salt" {
+#   count   = 1
+#   length  = 4
+#   special = false
 
-  keepers = {
-    deployment = var.cluster_name
-  }
-}
+#   keepers = {
+#     deployment = var.cluster_name
+#   }
+# }
 
 #####
 # NSG for Masters
@@ -162,7 +162,8 @@ resource "azurerm_public_ip" "mke_lb_pub_ip" {
   resource_group_name = var.rg
 
   allocation_method = "Static"
-  domain_name_label = format("mke-%s-%s", lower(replace(var.rg, "/[^a-zA-Z0-9]/", "")), lower(random_string.pub_ip_salt[0].result))
+  # domain_name_label = format("mke-%s-%s", lower(replace(var.rg, "/[^a-zA-Z0-9]/", "")), lower(random_string.pub_ip_salt[0].result))
+  domain_name_label = format("mke-hackberry")
 
   tags = merge(
     tomap({
